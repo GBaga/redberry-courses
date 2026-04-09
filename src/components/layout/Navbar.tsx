@@ -47,7 +47,7 @@ export function Navbar() {
                     </Button>
                     <button
                       onClick={() => pushModal("profile")}
-                      className="relative rounded-full bg-gray-100 p-2 text-gray-600 hover:bg-gray-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600"
+                      className="relative rounded-full bg-gray-100 p-2 text-gray-600 hover:bg-gray-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 cursor-pointer"
                     >
                       <span className="sr-only">Open user menu</span>
                       {user.avatar ? (
@@ -60,7 +60,7 @@ export function Navbar() {
                       )}
                     </button>
                     {/* Add a quick logout for dev convenience until profile covers it */}
-                    <button onClick={logout} className="text-xs text-red-500 hover:underline">Exit</button>
+                    <button onClick={logout} className="text-xs text-red-500 hover:underline cursor-pointer">Exit</button>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
