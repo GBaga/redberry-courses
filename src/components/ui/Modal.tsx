@@ -74,7 +74,7 @@ export function Modal({ isOpen, onClose, title, children, className, hideCloseBu
             {!hideCloseButton && (
               <button
                 type="button"
-                className="absolute right-4 top-4 sm:right-6 sm:top-6 rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 z-10"
+                className="absolute right-4 top-4 sm:right-6 sm:top-6 rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 z-10 cursor-pointer"
                 onClick={onClose}
               >
                 <span className="sr-only">Close</span>

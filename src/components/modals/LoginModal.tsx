@@ -93,7 +93,7 @@ export function LoginModal({ isOpen }: { isOpen: boolean }) {
           <button
             type="button"
             onClick={handleGoToSignup}
-            className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline"
+            className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline cursor-pointer"
           >
             Sign Up
           </button>

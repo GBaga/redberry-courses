@@ -142,7 +142,7 @@ export default function Home() {
         {user && inProgress.length > 0 && (
            <button 
              onClick={() => pushModal("sidebar")}
-             className="text-indigo-600 text-sm font-semibold hover:text-indigo-700"
+             className="text-indigo-600 text-sm font-semibold hover:text-indigo-700 cursor-pointer"
            >
              See All
            </button>
@@ -230,7 +230,7 @@ export default function Home() {
                <button 
                  key={idx}
                  onClick={() => setCurrentSlide(idx)}
-                 className={`h-1.5 rounded-full transition-all duration-300 ${currentSlide === idx ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"}`}
+                 className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${currentSlide === idx ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"}`}
                  aria-label={`Go to slide ${idx + 1}`}
                />
              ))}
@@ -238,13 +238,13 @@ export default function Home() {
            <div className="flex gap-3">
              <button 
                onClick={() => setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))}
-               className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+               className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center text-white hover:bg-white/10 transition-colors cursor-pointer"
              >
                <ChevronLeft className="w-4 h-4" />
              </button>
              <button 
                onClick={() => setCurrentSlide((prev) => (prev + 1) % slides.length)}
-               className="w-8 h-8 rounded-full border border-white flex items-center justify-center text-white bg-white/10 hover:bg-white/20 transition-colors"
+               className="w-8 h-8 rounded-full border border-white flex items-center justify-center text-white bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
              >
                <ChevronRight className="w-4 h-4" />
              </button>

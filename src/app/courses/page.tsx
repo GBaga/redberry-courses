@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, ChevronDown, Check } from "lucide-react";
 import { api } from "@/services/api";
 import { Course, Category, Topic, Instructor, PaginatedResponse } from "@/types";
 import { CourseCard } from "@/components/ui/CourseCard";
@@ -37,6 +37,7 @@ export default function CoursesPage() {
   const [totalCourses, setTotalCourses] = useState(0);
   const [pageMeta, setPageMeta] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   // Active Filters
   const activeSort = searchParams.get("sort") || "newest";
@@ -102,20 +103,58 @@ export default function CoursesPage() {
               All Courses <span className="text-gray-400 text-lg font-normal ml-2">({totalCourses})</span>
             </h1>
 
-            <div className="flex items-center gap-2">
-              <label htmlFor="sort" className="text-sm font-medium text-gray-500">Sort by:</label>
-              <select
-                id="sort"
-                value={activeSort}
-                onChange={(e) => setQueryParams({ sort: e.target.value, page: 1 })}
-                className="h-10 border border-gray-300 rounded-lg text-sm pl-3 pr-8 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
-                disabled={isLoading}
-              >
-                <option value="newest">Newest First</option>
-                <option value="price_asc">Price Low to High</option>
-                <option value="price_desc">Price High to Low</option>
-                <option value="popular">Most Popular</option>
-              </select>
+            <div className="flex items-center gap-3 relative z-10">
+              <span className="text-sm font-medium text-gray-500">Sort by:</span>
+              
+              <div className="relative">
+                <button
+                  onClick={() => setIsSortOpen(!isSortOpen)}
+                  disabled={isLoading}
+                  className={`flex items-center justify-between w-48 h-10 px-4 border rounded-lg text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 bg-white ${isSortOpen ? "border-indigo-500 ring-1 ring-indigo-500" : "border-gray-300 hover:border-gray-400"}`}
+                >
+                  <span className="font-medium text-gray-700">
+                    {{
+                      newest: "Newest First",
+                      price_asc: "Price Low to High",
+                      price_desc: "Price High to Low",
+                      popular: "Most Popular"
+                    }[activeSort] || "Newest First"}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isSortOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {isSortOpen && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-10" 
+                      onClick={() => setIsSortOpen(false)}
+                    />
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-lg z-20 py-1 overflow-hidden animate-in fade-in slide-in-from-top-2">
+                      {[
+                        { value: "newest", label: "Newest First" },
+                        { value: "price_asc", label: "Price Low to High" },
+                        { value: "price_desc", label: "Price High to Low" },
+                        { value: "popular", label: "Most Popular" },
+                      ].map((opt) => {
+                        const isSelected = activeSort === opt.value;
+                        return (
+                          <button
+                            key={opt.value}
+                            onClick={() => {
+                              setQueryParams({ sort: opt.value, page: 1 });
+                              setIsSortOpen(false);
+                            }}
+                            className={`w-full text-left px-4 py-2.5 text-sm transition-colors flex items-center justify-between ${isSelected ? "bg-indigo-50 text-indigo-700 font-semibold" : "text-gray-700 hover:bg-gray-50"}`}
+                          >
+                            {opt.label}
+                            {isSelected && <Check className="w-4 h-4 text-indigo-600" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -150,7 +189,7 @@ export default function CoursesPage() {
                 <button
                   disabled={activePage === 1}
                   onClick={() => setQueryParams({ page: activePage - 1 })}
-                  className="px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-600 disabled:opacity-50 hover:bg-gray-50 transition-colors"
+                  className="px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-600 disabled:opacity-50 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   Previous
                 </button>
@@ -161,7 +200,7 @@ export default function CoursesPage() {
                     <button
                       key={pNum}
                       onClick={() => setQueryParams({ page: pNum })}
-                      className={`w-10 h-10 flex items-center justify-center rounded-md text-sm font-medium transition-colors ${
+                      className={`w-10 h-10 flex items-center justify-center rounded-md text-sm font-medium transition-colors cursor-pointer ${
                         activePage === pNum
                           ? "bg-indigo-600 text-white"
                           : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -175,7 +214,7 @@ export default function CoursesPage() {
                 <button
                   disabled={activePage === pageMeta.lastPage}
                   onClick={() => setQueryParams({ page: activePage + 1 })}
-                  className="px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-600 disabled:opacity-50 hover:bg-gray-50 transition-colors"
+                  className="px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-600 disabled:opacity-50 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   Next
                 </button>

@@ -212,7 +212,7 @@ export function RegistrationModal({ isOpen }: { isOpen: boolean }) {
               e.preventDefault();
               switchModal("login");
             }}
-            className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline"
+            className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline cursor-pointer"
           >
             Log In
           </button>
