@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogIn, User as UserIcon, BookOpen, GraduationCap } from "lucide-react";
+import { LogIn, User as UserIcon, BookOpen, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
 import { useModal } from "@/context/ModalContext";
@@ -17,9 +17,9 @@ export function Navbar() {
     <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[1920px]">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="bg-indigo-600 p-2 rounded-lg text-white">
-              <GraduationCap className="h-6 w-6" />
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="bg-indigo-600 p-2 rounded-[10px] text-white">
+              <Rocket className="h-5 w-5" />
             </div>
             <span className="text-xl font-bold text-gray-900 hidden sm:block">RedClass</span>
           </Link>

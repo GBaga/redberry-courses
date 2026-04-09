@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, Rocket } from 'lucide-react';
 
 // Raw SVG icons for brands since Lucide removed them
 const Facebook = ({ className }: { className?: string }) => (
@@ -25,8 +25,8 @@ export function Footer() {
           {/* Logo and Brand */}
           <div className="col-span-1 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4 group">
-              <div className="w-8 h-8 rounded bg-indigo-600 flex items-center justify-center text-white font-black text-xl leading-none">
-                B
+              <div className="bg-indigo-600 p-2 rounded-[10px] flex items-center justify-center text-white">
+                <Rocket className="h-5 w-5" />
               </div>
               <span className="font-bold text-xl text-gray-900 group-hover:text-indigo-600 transition-colors">
                 RedClass
@@ -81,7 +81,46 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-          <p>Copyright © {new Date().getFullYear()} Redberry International.</p>
+          <div className="flex flex-col md:flex-row items-center gap-1 text-center md:text-left shadow-sm bg-gray-50/50 p-2 rounded-lg border border-gray-100">
+            <p>
+              © {new Date().getFullYear()} GBaga for{" "}
+              <a
+                href="https://redberry.international/bootcamp/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-400 hover:text-red-500 transition-colors mx-1 font-semibold"
+              >
+                Redberry
+              </a>
+              {" | "}
+              <a
+                href="https://redberry.gitbook.io/redberry-bootcamp-xi-assignment/eBd6HTCFN8WQC3Na5iEE"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-indigo-600 font-medium transition-colors mx-1"
+              >
+                Bootcamp #11
+              </a>
+              {" | "}
+              <a
+                href="https://redberry-redseam.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-indigo-600 transition-colors mx-1"
+              >
+                Bootcamp #10
+              </a>
+              {" | "}
+              <a
+                href="https://project-33-red-berry-momentum.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-indigo-600 transition-colors ml-1"
+              >
+                Bootcamp #9
+              </a>
+            </p>
+          </div>
           <div className="flex gap-4">
             <a href="#" className="hover:text-indigo-600 transition-colors">Terms and Conditions</a>
             <span>|</span>
