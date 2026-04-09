@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { Star } from "lucide-react";
 import { Course } from "@/types";
 import { Button } from "./Button";
 
@@ -23,18 +24,37 @@ export function CourseCard({ course }: CourseCardProps) {
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-5">
+
+        {/* Lecturer & Rating Row */}
+        <div className="flex items-center justify-between mb-2 text-xs">
+          <span className="text-gray-500">
+            Lecturer <span className="text-gray-800 font-semibold">{course.instructor?.name || "Unknown"}</span>
+          </span>
+          <div className="flex items-center gap-1 text-gray-700 font-medium">
+            <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+            {course.avgRating !== null && course.avgRating !== undefined
+              ? Number(course.avgRating).toFixed(1)
+              : "New"}
+          </div>
+        </div>
+
+        {/* Title */}
         <h3 className="mb-2 line-clamp-2 text-[15px] font-bold text-gray-900 leading-snug group-hover:text-indigo-600 transition-colors">
           {course.title}
         </h3>
 
-        <p className="mb-5 line-clamp-2 flex-1 text-[13px] text-gray-500 leading-relaxed">
+        {/* Description */}
+        <p className="mb-5 line-clamp-3 flex-1 text-[13px] text-gray-500 leading-relaxed">
           {course.description}
         </p>
 
         {/* Bottom: Price + Button */}
         <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4">
-          <span className="text-xl font-extrabold text-gray-900">${course.basePrice}</span>
-          <Button asChild variant="primary" size="sm" className="px-5 rounded-md font-semibold h-9 text-[13px]">
+          <div>
+            <span className="text-[11px] text-gray-400 block leading-tight">Starting from</span>
+            <span className="text-xl font-extrabold text-gray-900">${course.basePrice}</span>
+          </div>
+          <Button asChild variant="primary" size="sm" className="px-6 rounded-lg font-semibold h-9 text-[13px]">
             <Link href={`/courses/${course.id}`}>Details</Link>
           </Button>
         </div>

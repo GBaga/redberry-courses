@@ -431,41 +431,54 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                 </div>
               </div>
 
-              {/* CASCADING SELECTORS — Dropdown style */}
+              {/* CASCADING SELECTORS — Custom styled cards */}
               <div className="space-y-5">
 
                 {/* Step 1: Weekly Schedule */}
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   <label className="text-sm font-semibold text-gray-900">1. Select Days</label>
-                  <select
-                    value={selectedScheduleId ?? ""}
-                    onChange={(e) => handleScheduleSelect(Number(e.target.value))}
-                    className="w-full h-11 border border-gray-300 rounded-lg text-sm pl-3 pr-8 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <option value="" disabled>Choose weekly schedule...</option>
+                  <div className="grid grid-cols-1 gap-2">
                     {schedules.map(ws => (
-                      <option key={ws.id} value={ws.id}>{ws.label}</option>
+                      <button
+                        key={ws.id}
+                        onClick={() => handleScheduleSelect(ws.id)}
+                        className={`p-3 text-left text-sm rounded-lg border transition-all ${
+                          selectedScheduleId === ws.id
+                            ? "border-indigo-600 bg-indigo-50 text-indigo-900 ring-1 ring-indigo-600 font-medium"
+                            : "border-gray-200 hover:border-indigo-300 hover:bg-gray-50 bg-white text-gray-700"
+                        }`}
+                      >
+                        {ws.label}
+                      </button>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
                 {/* Step 2: Time Slots */}
                 {selectedScheduleId && (
-                  <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
+                  <div className="space-y-2.5 animate-in fade-in slide-in-from-top-2">
                     <label className="text-sm font-semibold text-gray-900">2. Select Time</label>
                     {fetchingSlots ? (
-                      <div className="h-11 bg-gray-100 animate-pulse rounded-lg" />
+                      <div className="space-y-2">
+                        <div className="h-11 bg-gray-100 animate-pulse rounded-lg" />
+                        <div className="h-11 bg-gray-100 animate-pulse rounded-lg" />
+                      </div>
                     ) : timeSlots.length > 0 ? (
-                      <select
-                        value={selectedTimeSlotId ?? ""}
-                        onChange={(e) => handleTimeSlotSelect(Number(e.target.value))}
-                        className="w-full h-11 border border-gray-300 rounded-lg text-sm pl-3 pr-8 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      >
-                        <option value="" disabled>Choose time slot...</option>
+                      <div className="grid grid-cols-1 gap-2">
                         {timeSlots.map(ts => (
-                          <option key={ts.id} value={ts.id}>{ts.label} ({ts.startTime} - {ts.endTime})</option>
+                          <button
+                            key={ts.id}
+                            onClick={() => handleTimeSlotSelect(ts.id)}
+                            className={`p-3 text-left text-sm rounded-lg border transition-all ${
+                              selectedTimeSlotId === ts.id
+                                ? "border-indigo-600 bg-indigo-50 text-indigo-900 ring-1 ring-indigo-600 font-medium"
+                                : "border-gray-200 hover:border-indigo-300 hover:bg-gray-50 bg-white text-gray-700"
+                            }`}
+                          >
+                            {ts.label} <span className="text-gray-400 text-xs ml-1">({ts.startTime} – {ts.endTime})</span>
+                          </button>
                         ))}
-                      </select>
+                      </div>
                     ) : (
                       <p className="text-sm text-gray-500 italic">No time slots available.</p>
                     )}
