@@ -8,7 +8,9 @@ import { Course, Category, Topic, Instructor, PaginatedResponse } from "@/types"
 import { CourseCard } from "@/components/ui/CourseCard";
 import { FilterSidebar } from "./FilterSidebar";
 
-export default function CoursesPage() {
+import { Suspense } from "react";
+
+function CoursesPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -224,5 +226,13 @@ export default function CoursesPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CoursesPage() {
+  return (
+    <Suspense fallback={<div className="h-screen w-full flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div></div>}>
+      <CoursesPageContent />
+    </Suspense>
   );
 }

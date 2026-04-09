@@ -28,7 +28,7 @@ const profileSchema = yup.object({
     .min(16, "Must be at least 16 years old")
     .max(120, "Age cannot exceed 120")
     .required("Age is required"),
-  avatar: yup.mixed<FileList>().nullable(),
+  avatar: yup.mixed<FileList>().nullable().optional(),
 });
 
 type ProfileFormValues = yup.InferType<typeof profileSchema>;
@@ -47,7 +47,7 @@ export function ProfileModal({ isOpen }: { isOpen: boolean }) {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<ProfileFormValues>({
-    resolver: yupResolver(profileSchema),
+    resolver: yupResolver(profileSchema) as any,
     defaultValues: {
       full_name: user?.fullName || "",
       mobile_number: user?.mobileNumber || "",

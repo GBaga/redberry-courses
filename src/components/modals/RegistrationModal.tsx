@@ -20,7 +20,7 @@ const registrationSchema = yup.object({
     .oneOf([yup.ref("password")], "Passwords must match")
     .required("Confirm password is required"),
   username: yup.string().min(3, "Username must be at least 3 characters").required("Username is required"),
-  avatar: yup.mixed<FileList>().nullable(),
+  avatar: yup.mixed<FileList>().nullable().optional(),
 });
 
 type RegistrationFormValues = yup.InferType<typeof registrationSchema>;
@@ -39,7 +39,7 @@ export function RegistrationModal({ isOpen }: { isOpen: boolean }) {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<RegistrationFormValues>({
-    resolver: yupResolver(registrationSchema),
+    resolver: yupResolver(registrationSchema) as any,
     mode: "onTouched",
   });
 
