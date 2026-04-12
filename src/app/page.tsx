@@ -208,7 +208,7 @@ export default function Home() {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 max-w-[1440px]">
       
       {/* Hero Banner Slider Component */}
-      <div className="relative rounded-[24px] overflow-hidden mb-12 shadow-sm aspect-[4/1] min-h-[220px] md:min-h-[300px] transition-all duration-700 ease-in-out">
+      <div className="relative rounded-[24px] overflow-hidden mb-12 shadow-sm aspect-auto md:aspect-[4/1] min-h-[320px] md:min-h-[300px] transition-all duration-700 ease-in-out">
          {/* Background gradients mapping to Figma representation */}
          <div className={`absolute inset-0 bg-gradient-to-r ${slides[currentSlide].gradient} opacity-90 transition-all duration-1000 ease-in-out`} />
          <div className="absolute inset-0 bg-[url('https://placehold.co/1200x400/transparent/white?text=Abstract+Texture')] opacity-20 mix-blend-overlay" />
@@ -216,8 +216,8 @@ export default function Home() {
          <div className={`absolute w-[800px] h-[800px] rounded-full blur-[100px] opacity-40 transition-all duration-1000 ${slides[currentSlide].blob1}`} />
          <div className={`absolute w-[600px] h-[600px] rounded-full blur-[100px] opacity-30 transition-all duration-1000 ${slides[currentSlide].blob2}`} />
 
-         <div className="relative h-full flex flex-col justify-center px-8 md:px-16 w-full max-w-4xl z-10 animate-in fade-in slide-in-from-bottom-4 duration-500" key={currentSlide}>
-           <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 tracking-tight drop-shadow-md">
+         <div className="relative h-full flex flex-col justify-center px-5 md:px-16 w-full max-w-4xl z-10 animate-in fade-in slide-in-from-bottom-4 duration-500" key={currentSlide}>
+           <h1 className="text-2xl md:text-5xl font-extrabold text-white mb-4 tracking-tight drop-shadow-md">
              {slides[currentSlide].title}
            </h1>
            <p className="text-white/90 text-sm md:text-base font-medium mb-8 max-w-2xl drop-shadow">
@@ -225,11 +225,11 @@ export default function Home() {
            </p>
            <div>
              {slides[currentSlide].href ? (
-               <Button asChild size="md" className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 px-8 py-6 rounded-lg text-base shadow-lg shadow-indigo-900/20">
+               <Button asChild size="md" className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 px-6 py-3 md:px-8 md:py-6 h-auto rounded-lg text-sm md:text-base shadow-lg shadow-indigo-900/20">
                  <Link href={slides[currentSlide].href}>{slides[currentSlide].btnText}</Link>
                </Button>
              ) : (
-               <Button onClick={slides[currentSlide].onClick} size="md" className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 px-8 py-6 rounded-lg text-base shadow-lg shadow-indigo-900/20">
+               <Button onClick={slides[currentSlide].onClick} size="md" className="bg-indigo-600 hover:bg-indigo-700 text-white border-0 px-6 py-3 md:px-8 md:py-6 h-auto rounded-lg text-sm md:text-base shadow-lg shadow-indigo-900/20">
                  {slides[currentSlide].btnText}
                </Button>
              )}
@@ -237,7 +237,7 @@ export default function Home() {
          </div>
 
          {/* Banner Navigation overlay matching Figma */}
-         <div className="absolute bottom-6 md:bottom-8 right-8 md:right-16 flex items-center gap-8 z-20">
+         <div className="absolute bottom-4 md:bottom-8 right-4 md:right-16 flex items-center gap-4 md:gap-8 z-20">
            <div className="flex gap-2">
              {slides.map((_, idx) => (
                <button 
