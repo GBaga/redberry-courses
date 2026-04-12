@@ -15,18 +15,20 @@ import { User } from "@/types";
 const profileSchema = yup.object({
   full_name: yup
     .string()
-    .min(3, "Full name must be at least 3 characters")
-    .max(50, "Full name cannot exceed 50 characters")
-    .required("Full name is required"),
+    .min(3, "Name must be at least 3 characters")
+    .max(50, "Name must not exceed 50 characters")
+    .required("Name is required"),
   mobile_number: yup
     .string()
-    .matches(/^5\d{8}$/, "Mobile number must be a valid 9-digit Georgian number starting with 5")
+    .transform((val) => val ? val.replace(/\s+/g, "") : val)
+    .matches(/^5/, "Georgian mobile numbers must start with 5")
+    .matches(/^\d{9}$/, "Mobile number must be exactly 9 digits")
     .required("Mobile number is required"),
   age: yup
     .number()
     .typeError("Age must be a number")
-    .min(16, "Must be at least 16 years old")
-    .max(120, "Age cannot exceed 120")
+    .min(16, "You must be at least 16 years old to enroll")
+    .max(120, "Please enter a valid age")
     .required("Age is required"),
   avatar: yup.mixed<FileList>().nullable().optional(),
 });
@@ -45,7 +47,7 @@ export function ProfileModal({ isOpen }: { isOpen: boolean }) {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isValid, touchedFields, isSubmitting },
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(profileSchema) as any,
     defaultValues: {
@@ -122,7 +124,7 @@ export function ProfileModal({ isOpen }: { isOpen: boolean }) {
       // Prevent simple closure if they haven't completed their profile yet
       // This maps to the confirmation dialog requirement implicitly
       const confirmDismiss = window.confirm(
-        "Your profile is incomplete. You will not be able to enroll in courses until all details are filled. Are you sure you want to close?"
+        "Your profile is incomplete. You won't be able to enroll in courses until you complete it. Close anyway?"
       );
       if (!confirmDismiss) return;
     }
@@ -141,8 +143,12 @@ export function ProfileModal({ isOpen }: { isOpen: boolean }) {
          )}
          <div>
            <p className="font-bold text-gray-900">{user?.username || "Learner"}</p>
-           {!user?.profileComplete && (
-              <p className="text-xs font-semibold text-yellow-600 bg-yellow-100 inline-block px-2 py-0.5 rounded-full mt-1">
+           {user?.profileComplete ? (
+              <p className="text-[11px] font-bold text-emerald-700 bg-emerald-100 inline-block px-2.5 py-0.5 rounded-full mt-1 border border-emerald-200">
+                Profile Complete ✓
+              </p>
+           ) : (
+              <p className="text-[11px] font-bold text-yellow-700 bg-yellow-100 inline-block px-2.5 py-0.5 rounded-full mt-1 border border-yellow-200">
                 Profile Incomplete
               </p>
            )}
@@ -178,15 +184,17 @@ export function ProfileModal({ isOpen }: { isOpen: boolean }) {
           placeholder="First Last"
           {...register("full_name")}
           error={errors.full_name?.message}
+          isSuccess={touchedFields.full_name && !errors.full_name}
         />
 
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
              <Input
                label="Mobile Number*"
-               placeholder="555123456"
+               placeholder="555 123 456"
                {...register("mobile_number")}
                error={errors.mobile_number?.message}
+               isSuccess={touchedFields.mobile_number && !errors.mobile_number}
              />
           </div>
           <div className="w-full sm:w-1/3">
@@ -196,6 +204,7 @@ export function ProfileModal({ isOpen }: { isOpen: boolean }) {
                type="number"
                {...register("age")}
                error={errors.age?.message}
+               isSuccess={touchedFields.age && !errors.age}
              />
           </div>
         </div>
@@ -212,8 +221,8 @@ export function ProfileModal({ isOpen }: { isOpen: boolean }) {
         </div>
 
         <div className="pt-4">
-          <Button type="submit" fullWidth isLoading={isSubmitting}>
-            Update Profile
+          <Button type="submit" fullWidth isLoading={isSubmitting} disabled={!isValid}>
+            Save Profile
           </Button>
         </div>
       </form>
