@@ -57,7 +57,7 @@ export function EnrollmentCard({ enrollment }: EnrollmentCardProps) {
             </div>
           </div>
           <Button asChild variant="outline" size="sm" className="px-4 rounded-md text-xs font-semibold h-8 shrink-0 border-indigo-200 text-indigo-600 hover:bg-indigo-50">
-            <Link href={`/courses/${course.id}`}>View</Link>
+            <Link href={`/courses/${course.id}`}>Continue</Link>
           </Button>
         </div>
       </div>
