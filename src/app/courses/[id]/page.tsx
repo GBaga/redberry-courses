@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
-import { Star, Clock, CheckCircle2, AlertTriangle, AlertCircle, MapPin, Users, ChevronDown } from "lucide-react";
+import { Star, Clock, CheckCircle2, AlertTriangle, AlertCircle, MapPin, Users, ChevronDown, X } from "lucide-react";
 import { api } from "@/services/api";
 import { CourseDetail, WeeklySchedule, TimeSlot, SessionType } from "@/types";
 import { Button } from "@/components/ui/Button";
@@ -37,6 +37,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
 
   // Progress actions
   const [isCompleting, setIsCompleting] = useState(false);
+  const [showCompletionSuccess, setShowCompletionSuccess] = useState(false);
   const [isDropping, setIsDropping] = useState(false);
   const [submittingReview, setSubmittingReview] = useState(false);
   const [selectedRating, setSelectedRating] = useState<number>(0);
@@ -165,6 +166,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
     setIsCompleting(true);
     try {
       await api.patch(`/enrollments/${course.enrollment.id}/complete`);
+      setShowCompletionSuccess(true);
       fetchCourse();
     } catch (err) {
       console.error(err);
@@ -235,6 +237,23 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-[1440px]">
+      
+      {showCompletionSuccess && (
+        <div className="mb-8 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between shadow-sm animate-in fade-in slide-in-from-top-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+              <CheckCircle2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-emerald-900 font-bold">Course Completed! 🎉</h3>
+              <p className="text-emerald-700 text-sm">Congratulations! You've completed {course.title}!</p>
+            </div>
+          </div>
+          <button onClick={() => setShowCompletionSuccess(false)} className="text-emerald-500 hover:text-emerald-700">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
 
       {/* Course Header — Side by side: Image left, Info right */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-10">
@@ -335,7 +354,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm font-medium">
-                  <span className="text-gray-600">Completion</span>
+                  <span className="text-gray-600">Course Progress:</span>
                   <span className={course.enrollment.progress === 100 ? "text-emerald-600" : "text-indigo-600"}>
                     {course.enrollment.progress}%
                   </span>
@@ -366,6 +385,16 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                 </div>
               ) : (
                 <div className="space-y-6 pt-4 border-t border-gray-100">
+                  <Button 
+                    variant="outline" 
+                    fullWidth 
+                    className="border-indigo-200 text-indigo-700 hover:bg-indigo-50"
+                    onClick={handleDropCourse}
+                    isLoading={isDropping}
+                  >
+                    🔄 Retake Course
+                  </Button>
+                  
                   {course.isRated ? (
                     <p className="text-center text-sm font-medium text-gray-500 bg-gray-50 p-3 rounded-lg border border-gray-200">
                       ✏️ You've already rated this course
@@ -517,7 +546,7 @@ export default function CourseDetailPage({ params }: { params: Promise<{ id: str
                                 </span>
                                 <span className={`font-semibold flex items-center gap-1 ${isFull ? 'text-red-500' : st.availableSeats < 5 ? 'text-orange-500' : 'text-emerald-600'}`}>
                                   <Users className="w-3 h-3" />
-                                  {isFull ? 'Fully Booked' : `${st.availableSeats} seats`}
+                                  {isFull ? 'Fully Booked' : st.availableSeats < 5 ? `Only ${st.availableSeats} seats left!` : `${st.availableSeats} seats`}
                                 </span>
                               </div>
                             </button>
