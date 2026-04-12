@@ -108,7 +108,13 @@ export function EnrolledSidebar({ isOpen }: { isOpen: boolean }) {
                       />
                    </div>
                    <div className="bg-gray-50 px-3 py-2 text-[11px] text-gray-500 flex justify-between items-center group-hover:bg-indigo-50/50 transition-colors">
-                      <span>{enr.schedule.weeklySchedule.label}</span>
+                      <div className="flex flex-col gap-0.5">
+                        <span className="font-medium text-gray-700">{enr.schedule.weeklySchedule.label}</span>
+                        <span>{enr.schedule.timeSlot.label}</span>
+                        {enr.schedule.location && (
+                          <span className="text-gray-400 mt-0.5">📍 {enr.schedule.location}</span>
+                        )}
+                      </div>
                       <span className="flex items-center text-indigo-600 font-medium opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">Resume <ChevronRight className="w-3 h-3 ml-0.5" /></span>
                    </div>
                  </Link>
