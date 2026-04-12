@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Star, Clock } from "lucide-react";
 import { Course } from "@/types";
 import { Button } from "./Button";
 
@@ -24,6 +24,17 @@ export function CourseCard({ course }: CourseCardProps) {
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-5">
+
+        {/* Category & Duration Row */}
+        <div className="flex items-center justify-between mb-3 text-xs text-gray-500">
+          <span className="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full font-semibold uppercase tracking-wider text-[10px]">
+            {course.category?.name || "General"}
+          </span>
+          <span className="flex items-center gap-1 font-medium text-gray-600">
+            <Clock className="w-3.5 h-3.5" />
+            {course.durationWeeks} Weeks
+          </span>
+        </div>
 
         {/* Lecturer & Rating Row */}
         <div className="flex items-center justify-between mb-2 text-xs">
@@ -54,8 +65,8 @@ export function CourseCard({ course }: CourseCardProps) {
             <span className="text-[11px] text-gray-400 block leading-tight">Starting from</span>
             <span className="text-xl font-extrabold text-gray-900">${course.basePrice}</span>
           </div>
-          <Button asChild variant="primary" size="sm" className="px-6 rounded-lg font-semibold h-9 text-[13px]">
-            <Link href={`/courses/${course.id}`}>Details</Link>
+          <Button asChild variant="primary" size="sm" className="px-5 rounded-lg font-semibold h-9 text-[13px]">
+            <Link href={`/courses/${course.id}`}>View Details</Link>
           </Button>
         </div>
       </div>
