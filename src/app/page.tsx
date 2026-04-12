@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, User as UserIcon } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Lock, BookOpen } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useModal } from "@/context/ModalContext";
 import { Button } from "@/components/ui/Button";
@@ -169,7 +169,7 @@ export default function Home() {
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 bg-white/40">
              <div className="bg-white shadow-[0px_4px_24px_rgba(0,0,0,0.06)] rounded-2xl p-8 max-w-sm w-full text-center border border-gray-100">
                <div className="bg-indigo-50 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                 <UserIcon className="w-5 h-5 text-indigo-600" />
+                 <Lock className="w-5 h-5 text-indigo-600" />
                </div>
                <p className="text-[15px] font-semibold text-gray-900 mb-6 px-4">
                  Sign in to track your learning progress
@@ -187,7 +187,20 @@ export default function Home() {
             <EnrollmentCard key={enrollment.id} enrollment={enrollment} />
           ))}
         </div>
-      ) : null}
+      ) : (
+        <div className="bg-white p-12 rounded-xl border border-gray-100 flex flex-col items-center justify-center text-center shadow-sm">
+          <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mb-5">
+            <BookOpen className="w-8 h-8 text-indigo-300" />
+          </div>
+          <p className="text-xl font-bold text-gray-900 mb-2">
+            You haven't enrolled in any courses yet.
+          </p>
+          <p className="text-gray-500 mb-8">Start your learning journey today!</p>
+          <Button asChild className="px-8 shadow-md">
+            <Link href="/courses">Browse Courses</Link>
+          </Button>
+        </div>
+      )}
     </section>
   );
 
