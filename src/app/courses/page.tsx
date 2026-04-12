@@ -102,7 +102,7 @@ function CoursesPageContent() {
           {/* Header: Title + Sort */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
             <h1 className="text-2xl font-bold text-gray-900">
-              All Courses <span className="text-gray-400 text-lg font-normal ml-2">({totalCourses})</span>
+              All Courses <span className="text-gray-400 text-lg font-normal ml-2">Showing {totalCourses} courses</span>
             </h1>
 
             <div className="flex items-center gap-3 relative z-10">
@@ -119,7 +119,8 @@ function CoursesPageContent() {
                       newest: "Newest First",
                       price_asc: "Price Low to High",
                       price_desc: "Price High to Low",
-                      popular: "Most Popular"
+                      popular: "Most Popular",
+                      title_asc: "Title: A-Z"
                     }[activeSort] || "Newest First"}
                   </span>
                   <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isSortOpen ? "rotate-180" : ""}`} />
@@ -137,6 +138,7 @@ function CoursesPageContent() {
                         { value: "price_asc", label: "Price Low to High" },
                         { value: "price_desc", label: "Price High to Low" },
                         { value: "popular", label: "Most Popular" },
+                        { value: "title_asc", label: "Title: A-Z" },
                       ].map((opt) => {
                         const isSelected = activeSort === opt.value;
                         return (
