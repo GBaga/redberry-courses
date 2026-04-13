@@ -13,6 +13,8 @@ interface FilterSidebarProps {
   setQueryParams: (params: Record<string, any>) => void;
   clearAllFilters: () => void;
   activeFiltersCount: number;
+  onClose?: () => void;
+  totalResults?: number;
 }
 
 export function FilterSidebar({
@@ -23,6 +25,8 @@ export function FilterSidebar({
   setQueryParams,
   clearAllFilters,
   activeFiltersCount,
+  onClose,
+  totalResults,
 }: FilterSidebarProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -125,11 +129,18 @@ export function FilterSidebar({
         <h2 className="font-bold text-gray-900 flex items-center gap-2">
           <Filter className="h-4 w-4" /> Filters
         </h2>
-        {activeFiltersCount > 0 && (
-          <span className="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded-full">
-            {activeFiltersCount}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {activeFiltersCount > 0 && (
+            <span className="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded-full">
+              {activeFiltersCount}
+            </span>
+          )}
+          {onClose && (
+            <button onClick={onClose} className="p-1 rounded-md hover:bg-gray-200 transition-colors text-gray-500 hover:text-gray-900 cursor-pointer">
+              <X className="h-5 w-5" />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="p-5 space-y-8">
@@ -239,14 +250,24 @@ export function FilterSidebar({
       </div>
 
       {/* Clear Filters Footer */}
-      {activeFiltersCount > 0 && (
-        <div className="p-4 border-t border-gray-100 bg-gray-50/50">
-          <button 
-            onClick={clearAllFilters}
-            className="w-full flex items-center justify-center gap-1.5 py-2 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
-          >
-             <X className="h-4 w-4" /> Clear All Filters
-          </button>
+      {(activeFiltersCount > 0 || onClose) && (
+        <div className="p-4 border-t border-gray-100 bg-gray-50/50 space-y-2">
+          {activeFiltersCount > 0 && (
+            <button 
+              onClick={clearAllFilters}
+              className="w-full flex items-center justify-center gap-1.5 py-2 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
+            >
+               <X className="h-4 w-4" /> Clear All Filters
+            </button>
+          )}
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors cursor-pointer"
+            >
+              Show Results{totalResults !== undefined ? ` (${totalResults})` : ''}
+            </button>
+          )}
         </div>
       )}
     </div>

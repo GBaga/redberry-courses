@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Search, ChevronDown, Check } from "lucide-react";
+import { Search, ChevronDown, Check, SlidersHorizontal } from "lucide-react";
 import { api } from "@/services/api";
 import { Course, Category, Topic, Instructor, PaginatedResponse } from "@/types";
 import { CourseCard } from "@/components/ui/CourseCard";
@@ -40,6 +40,7 @@ function CoursesPageContent() {
   const [pageMeta, setPageMeta] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // Active Filters
   const activeSort = searchParams.get("sort") || "newest";
@@ -84,8 +85,8 @@ function CoursesPageContent() {
       {/* Two-column layout: Sidebar + Grid */}
       <div className="flex flex-col lg:flex-row gap-8">
 
-        {/* Left Sidebar */}
-        <div className="w-full lg:w-[260px] shrink-0">
+        {/* Left Sidebar — Desktop only */}
+        <div className="hidden lg:block w-[260px] shrink-0">
           <FilterSidebar
             activeSearch={activeSearch}
             activeCategories={activeCategories}
@@ -97,13 +98,55 @@ function CoursesPageContent() {
           />
         </div>
 
+        {/* Mobile Filter Drawer */}
+        {isFilterOpen && (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            {/* Overlay */}
+            <div
+              className="absolute inset-0 bg-black/40 animate-in fade-in duration-200"
+              onClick={() => setIsFilterOpen(false)}
+            />
+            {/* Drawer panel */}
+            <div className="absolute inset-y-0 left-0 w-[300px] max-w-[85vw] bg-white shadow-2xl overflow-y-auto animate-in slide-in-from-left duration-300">
+              <FilterSidebar
+                activeSearch={activeSearch}
+                activeCategories={activeCategories}
+                activeTopics={activeTopics}
+                activeInstructors={activeInstructors}
+                setQueryParams={setQueryParams}
+                clearAllFilters={clearAllFilters}
+                activeFiltersCount={activeFiltersCount + (activeSearch ? 1 : 0)}
+                onClose={() => setIsFilterOpen(false)}
+                totalResults={totalCourses}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Right Content */}
         <div className="flex-1 min-w-0">
           {/* Header: Title + Sort */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-            <h1 className="text-2xl font-bold text-gray-900">
-              All Courses <span className="text-gray-400 text-lg font-normal ml-2">Showing {totalCourses} courses</span>
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-gray-900">
+                All Courses <span className="text-gray-400 text-lg font-normal ml-2">Showing {totalCourses} courses</span>
+              </h1>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {/* Mobile filter trigger */}
+              <button
+                onClick={() => setIsFilterOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-4 h-10 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:border-gray-400 transition-colors cursor-pointer"
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filters
+                {activeFiltersCount > 0 && (
+                  <span className="bg-indigo-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                    {activeFiltersCount + (activeSearch ? 1 : 0)}
+                  </span>
+                )}
+              </button>
 
             <div className="flex items-center gap-3 relative z-10">
               <span className="text-sm font-medium text-gray-500">Sort by:</span>
@@ -159,6 +202,7 @@ function CoursesPageContent() {
                   </>
                 )}
               </div>
+            </div>
             </div>
           </div>
 
